@@ -1,0 +1,3 @@
+/home/zhang/project/2019/0407/sqrt-cmake/build/CMakeFiles/rebuild_cache.dir
+/home/zhang/project/2019/0407/sqrt-cmake/build/CMakeFiles/edit_cache.dir
+/home/zhang/project/2019/0407/sqrt-cmake/build/CMakeFiles/sqrt-cmake.dir
