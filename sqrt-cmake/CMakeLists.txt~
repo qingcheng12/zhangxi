@@ -1,7 +1,7 @@
 #1. cmake verson，指定cmake版本 
 cmake_minimum_required(VERSION 2.6)
 
-# 2. project name  设置项目名称
+# 2. project name
 PROJECT(sqrt-cmake)
 
 # 3. head file path  设置包含的目录
