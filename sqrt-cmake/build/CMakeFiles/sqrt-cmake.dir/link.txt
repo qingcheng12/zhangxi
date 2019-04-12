@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/sqrt-cmake.dir/src/b.c.o CMakeFiles/sqrt-cmake.dir/src/main.c.o  -o sqrt-cmake -lm 

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/zhang/project/2019/0407/sqrt-cmake/include/b.h
+math.h
+-
+
+/home/zhang/project/2019/0407/sqrt-cmake/src/b.c
+../include/b.h
+/home/zhang/project/2019/0407/sqrt-cmake/include/b.h
+
+/home/zhang/project/2019/0407/sqrt-cmake/src/main.c
+../include/b.h
+/home/zhang/project/2019/0407/sqrt-cmake/include/b.h
+stdio.h
+-
+
