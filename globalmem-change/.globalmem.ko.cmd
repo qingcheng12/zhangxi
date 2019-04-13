@@ -1,0 +1,1 @@
+cmd_/home/zhang/project/2019/0412/globalmem/globalmem.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /home/zhang/project/2019/0412/globalmem/globalmem.ko /home/zhang/project/2019/0412/globalmem/globalmem.o /home/zhang/project/2019/0412/globalmem/globalmem.mod.o
