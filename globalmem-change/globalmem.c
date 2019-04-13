@@ -35,6 +35,7 @@ struct globalmem_dev
 {                                                        
   struct cdev cdev; /*cdev结构体*/                       
   unsigned char mem[GLOBALMEM_SIZE]; /*全局内存*/        
+  struct mutex mutex;  // add in 20190413
 };
 
 struct globalmem_dev *globalmem_devp; /*设备结构体指针*/
@@ -60,7 +61,10 @@ static int globalmem_ioctl(struct inode *inodep, struct file *filp, unsigned
   switch (cmd)
   {
     case MEM_CLEAR:
+      mutex_lock(&dev->mutex);
       memset(dev->mem, 0, GLOBALMEM_SIZE);      
+      mutex_unlock(&dev->mutex);
+
       printk(KERN_INFO "globalmem is set to zero\n");
       break;
 
@@ -85,6 +89,7 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size,
   if (count > GLOBALMEM_SIZE - p)
     count = GLOBALMEM_SIZE - p;
 
+  mutex_lock(&dev->mutex);
   /*内核空间->用户空间*/
   if (copy_to_user(buf, (void*)(dev->mem + p), count))
   {
@@ -98,6 +103,7 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size,
     printk(KERN_INFO "read %d bytes(s) from %d\n", count, p);
   }
 
+  mutex_unlock(&dev->mutex);
   return ret;
 }
 
@@ -116,6 +122,7 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf,
   if (count > GLOBALMEM_SIZE - p)
     count = GLOBALMEM_SIZE - p;
     
+  mutex_lock(&dev->mutex);
   /*用户空间->内核空间*/
   if (copy_from_user(dev->mem + p, buf, count))
     ret =  - EFAULT;
@@ -127,6 +134,7 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf,
     printk(KERN_INFO "written %d bytes(s) from %d\n", count, p);
   }
 
+  mutex_unlock(&dev->mutex);
   return ret;
 }
 
@@ -217,11 +225,12 @@ int globalmem_init(void)
   globalmem_devp = kmalloc(sizeof(struct globalmem_dev), GFP_KERNEL);
   if (!globalmem_devp)    /*申请失败*/
   {
-    result =  - ENOMEM;
+    result =  -ENOMEM;
     goto fail_malloc;
   }
   memset(globalmem_devp, 0, sizeof(struct globalmem_dev));
-  
+ 
+  mutex_init(&globalmem_devp->mutex); 
   globalmem_setup_cdev(globalmem_devp, 0);
   return 0;
 
